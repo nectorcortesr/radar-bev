@@ -8,8 +8,6 @@ points = []
 CALIBRATION_FILE = "calibration.json"
 
 def mouse_callback(event, x, y, flags, param):
-    global points
-
     if event == cv2.EVENT_LBUTTONDOWN:
         if len(points) >= 4:
             points.pop(0)
@@ -25,8 +23,6 @@ def save_calibration(pts, filename):
 
 
 def main():
-    global points
-
     frame = np.zeros((720, 1280, 3), dtype=np.uint8)
     cv2.rectangle(frame, (300, 300), (900, 600), (50, 50, 50), -1)
     cv2.putText(frame, "Haz clic en 4 esquinas. Presiona 'q' para salir.", 
