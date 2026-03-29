@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  cv_pipeline:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ./data:/app/data:rw
+      - ./calibration.json:/app/calibration.json:rw
+    network_mode: host
+
+    command: ["--mode", "video", "--video", "data/camiones.mp4"]
