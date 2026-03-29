@@ -1,52 +1,33 @@
-# Archivo: src/main.py
-import cv2
-import time
+def main(mode: str = "calibration") -> None:
+    """
+    Punto de entrada principal de la aplicación.
 
-def process_video(video_path: str) -> None:
-    """Abre un stream de video y muestra los FPS en tiempo real."""
-    cap = cv2.VideoCapture(video_path)
-    
-    # Por qué el assert: VideoCapture devuelve objeto válido incluso si
-    # el archivo no existe. Sin este assert, el error aparece 3 líneas
-    # después con un mensaje confuso.
-    assert cap.isOpened(), f"Error: No se pudo abrir {video_path}"
+    Args:
+        mode (str): Modo de ejecución:
+            - "calibration": herramienta de calibración
+            - "video": procesamiento de video
+    """
+    if mode == "calibration":
+        from src.tools.calibration_tool import CalibrationTool
 
-    prev_time = time.time()
+        CalibrationTool().run()
 
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            break
+    elif mode == "video":
+        from src.app.video_processor import VideoProcessor
 
-        current_time = time.time()
-        
-        # FPS = 1 frame / tiempo que tardó ese frame en procesarse
-        # Si tardó 0.033s → 1/0.033 = 30 FPS
-        # El max(... , 1e-9) evita división por cero en el primer frame
-        fps = 1.0 / max(current_time - prev_time, 1e-9)
-        prev_time = current_time
+        VideoProcessor("data/camiones.mp4").run()
 
-        # cv2.putText(imagen, texto, posicion, fuente, escala, color_BGR, grosor)
-        # Ojo: OpenCV usa BGR no RGB. Verde = (0, 255, 0)
-        cv2.putText(
-            frame,
-            f"FPS: {fps:.1f}",
-            (20, 50),
-            cv2.FONT_HERSHEY_SIMPLEX,
-            1.0,
-            (0, 255, 0),
-            2
-        )
+    else:
+        raise ValueError(f"Modo desconocido: {mode}")
 
-        cv2.imshow("Monitor de Patio - MVP1", frame)
-
-        # waitKey(1): da 1ms al backend GUI para renderizar el frame.
-        # Sin esto la ventana no se actualiza.
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-
-    cap.release()
-    cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    process_video("data/camiones.mp4")
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--mode", default="calibration")
+    parser.add_argument("--video", default="data/camiones.mp4")
+
+    args = parser.parse_args()
+
+    main(args.mode)

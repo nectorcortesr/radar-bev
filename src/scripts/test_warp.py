@@ -1,6 +1,6 @@
 import cv2
-import numpy as np
-from geometry.transforms2d import rotation_2d, scale_2d, compose
+from src.geometry.transforms2d import rotation_2d, scale_2d, compose
+
 
 def test_warp_image():
     img = cv2.imread("data/yard.png")  # pon aquí tu imagen
