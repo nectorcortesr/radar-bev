@@ -82,13 +82,7 @@ def main():
                 2,
             )
 
-        cv2.imshow("Medicion BEV", display)
-
-        if cv2.waitKey(1) & 0xFF == ord("q"):
-            break
-
-    cv2.destroyAllWindows()
-
+        cv2.imwrite("medidicion_bev.jpg", display)
 
 if __name__ == "__main__":
     os.makedirs("src/measurement", exist_ok=True)

@@ -29,41 +29,46 @@ class VideoProcessor:
         cap = cv2.VideoCapture(self.video_path)
         assert cap.isOpened()
 
+        # -------- VIDEO WRITER --------
+        fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+        out = cv2.VideoWriter("output.mp4", fourcc, 20.0, (500, 500))
+
+        # -------- EVENT LOG --------
+        import csv
+        csv_file = open("events.csv", "w", newline="")
+        writer = csv.writer(csv_file)
+        writer.writerow(["frame", "min_distance_m", "alert"])
+
         prev_time = time.time()
+        frame_id = 0
 
         while True:
             ret, frame = cap.read()
             if not ret:
                 break
 
+            frame_id += 1
+
             # ---------- DETECCIÓN HSV ----------
             hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-
             lower = np.array([20, 100, 100])
             upper = np.array([30, 255, 255])
-
             mask = cv2.inRange(hsv, lower, upper)
-
             centroids = get_centroids(mask)
 
-            # ---------- TRANSFORMAR A BEV ----------
+            # ---------- BEV ----------
             bev = self.mapper.transform_frame(frame, (500, 500))
-
             bev_points = []
-
-            assert self.mapper.H is not None, "Homografía no inicializada"
 
             for cx, cy in centroids:
                 pt = np.array([[[cx, cy]]], dtype=np.float32)
-
                 warped = cv2.perspectiveTransform(pt, self.mapper.H)
                 x_bev, y_bev = warped[0][0]
 
                 bev_points.append(Point2D(int(x_bev), int(y_bev)))
-
                 cv2.circle(bev, (int(x_bev), int(y_bev)), 5, (0, 0, 255), -1)
 
-            # ---------- MEDIR DISTANCIA ----------
+            # ---------- DISTANCIA ----------
             min_dist = float("inf")
             closest_pair = None
 
@@ -73,6 +78,8 @@ class VideoProcessor:
                     if d < min_dist:
                         min_dist = d
                         closest_pair = (bev_points[i], bev_points[j])
+
+            alert = 0
 
             if closest_pair:
                 p1, p2 = closest_pair
@@ -92,6 +99,7 @@ class VideoProcessor:
                 )
 
                 if min_dist < 10:
+                    alert = 1
                     cv2.putText(
                         bev,
                         "ALERTA!",
@@ -117,12 +125,17 @@ class VideoProcessor:
                 2,
             )
 
-            # ---------- SHOW ----------
-            cv2.imshow("Mask", mask)
-            cv2.imshow("BEV", bev)
+            # ---------- OUTPUTS ----------
+            out.write(bev)
+            writer.writerow([frame_id, min_dist if min_dist != float("inf") else -1, alert])
 
-            if cv2.waitKey(1) & 0xFF == ord("q"):
-                break
+            if frame_id % 30 == 0:
+                print(f"Frame {frame_id} | Dist: {min_dist:.2f} | Alert: {alert}")
 
         cap.release()
-        cv2.destroyAllWindows()
+        out.release()
+        csv_file.close()
+
+        print("✅ Video generado: output.mp4")
+        print("✅ Eventos guardados: events.csv")
+        cap.release()

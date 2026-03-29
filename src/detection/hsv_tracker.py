@@ -71,10 +71,9 @@ def main():
             log_event("events.csv", m_dist)
             print(f"¡ALERTA! Vehículos demasiado cerca: {m_dist:.2f}m.")
 
-    cv2.imshow("HSV Tracker", frame)
-    cv2.imshow("Mascara HSV", mask)
+    cv2.imwrite("hsv_tracker.jpg", frame)
+    cv2.imwrite("hsv_mask.jpg", mask)
     cv2.waitKey(0)
-    cv2.destroyAllWindows()
 
     assert os.path.exists(
         "events.csv"
