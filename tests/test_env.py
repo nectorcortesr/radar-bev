@@ -1,4 +1,3 @@
-# Archivo: tests/test_env.py
 def test_opencv_importable():
     import cv2
     assert cv2.__version__ is not None, "OpenCV no está instalado"
