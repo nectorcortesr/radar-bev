@@ -1,23 +1,82 @@
-# 🚜 Industrial BEV Radar for Mining Yards
+# 🚜 Radar BEV Industrial
 
-[![Industrial Perception CI](https://github.com/nectorcortesr/radar-bev/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_USERNAME/radar-bev/actions/workflows/ci.yml)
+> Transforming standard camera feeds into real-time Bird’s Eye View (BEV) intelligence for industrial environments.
 
-A classical computer vision pipeline that transforms oblique security camera feeds into metric Bird's Eye View (BEV) systems in real-time, designed for collision monitoring and proximity alerts in open-pit mining operations.
+---
 
-![BEV Demo](output/demo.gif)
+## 🚀 Live Release
 
-## 🚀 Features & Performance
-- **Zero Deep Learning:** Relies entirely on HSV color segmentation, spatial moments, and pure projective geometry.
-- **Ultra-Low Latency:** Core processing achieves >400 FPS on CPU (deterministically benchmarked via `cProfile`).
-- **Interactive Calibration:** 4-point Direct Linear Transform (DLT) interactive tool with JSON state persistence.
-- **Production-Ready Architecture:** Clean OOP architecture (SRP), Multi-stage Docker deployment, and automated CI/CD pipeline via GitHub Actions.
+👉 **[v1.0 - Radar BEV Industrial MVP](https://github.com/nectorcortesr/radar-bev/releases/tag/v1.0)**
+
+---
+
+## 🎥 Demo
+
+*(Add a GIF here showing input video → BEV output)*
+
+---
+
+## 🧠 What is this?
+
+Radar BEV Industrial is a high-performance computer vision system that converts oblique camera feeds into metric Bird’s Eye View (BEV) representations.
+
+It is designed for:
+
+* Collision monitoring
+* Proximity detection
+* Spatial awareness in mining and industrial yards
+
+---
+
+## ✨ Key Features
+
+* ⚡ **400+ FPS on CPU** (no GPU required)
+* 🧮 **Zero Deep Learning** — pure geometry & classical CV
+* 🎯 **Precise BEV transformation** using projective geometry
+* 🐳 **Fully containerized** with Docker
+* 🔄 **CI/CD pipeline** with GitHub Actions
+
+---
+
+## 🏗️ Architecture
+
+*(Optional: add diagram here)*
+
+* HSV segmentation
+* Contour detection + spatial moments
+* Homography (DLT) transformation
+* BEV projection
+
+---
 
 ## ⚙️ Quick Start
-The system runs 100% containerized to prevent dependency conflicts.
 
 ```bash
-# Allow Docker to connect to the host's X11 socket for GUI rendering
 xhost +local:docker
-
-# Build and run the multi-stage container
 docker-compose up --build
+```
+
+---
+
+## 📦 Tech Stack
+
+* Python
+* OpenCV
+* Docker / Docker Compose
+* GitHub Actions (CI/CD)
+
+---
+
+## ⚠️ Status
+
+MVP v1.0 released.
+Currently evolving towards real-time analytics and AI integration.
+
+---
+
+## 🔜 Roadmap
+
+* Real-time streaming
+* Multi-object tracking
+* AI-based prediction models
+* Visualization dashboards
