@@ -1,21 +1,58 @@
+# Virtual environment
 venv/
 .env
+.env.*
+.venv/
 
+# Python cache / compiled
 __pycache__/
 *.pyc
 *.pyo
-.pytest_cache/
+*.pyd
 
+# Testing / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Data and models (heavy)
 data/
+datasets/
 *.mp4
 *.avi
 *.mov
 *.npz
+*.npy
 *.pth
+*.pt
+*.onnx
+*.h5
 
+# Logs
+logs/
+*.log
 
+# Jupyter
+.ipynb_checkpoints/
+
+# Build / packaging
 build/
 dist/
 *.egg-info/
+.eggs/
 
-.vscode
+# IDEs / editors
+.vscode/
+.idea/
+
+# OS garbage
+.DS_Store
+Thumbs.db
+
+# Large File
+*.tmp
+*.swp
+
+# Local config (sometimes useful to ignore)
+config.local.yaml
+config.local.json

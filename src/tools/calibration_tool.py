@@ -9,10 +9,10 @@ from src.io.calibration_repository import CalibrationRepository
 
 class CalibrationTool:
     """
-    Herramienta HEADLESS para calibración:
-    - Guarda frame base
-    - Usa puntos desde calibration.json
-    - Valida homografía
+    Headless calibration tool:
+    - Saves base frame
+    - Uses points from calibration.json
+    - Validates homography
     """
 
     def __init__(self, output_file: str = "calibration.json"):
@@ -21,27 +21,27 @@ class CalibrationTool:
         self.repo = CalibrationRepository()
 
     def run(self):
-        # 1. Crear frame base (o cargar imagen real)
+        # 1. Create base frame (or load real image)
         frame = np.zeros((720, 1280, 3), dtype=np.uint8)
 
         cv2.rectangle(frame, (300, 300), (900, 600), (50, 50, 50), -1)
 
-        # 2. Guardar imagen para calibrar manualmente
+        # 2. Save image for manual calibration
         cv2.imwrite("calibration_frame.jpg", frame)
-        print("Frame guardado como calibration_frame.jpg")
+        print("Frame saved as calibration_frame.jpg")
 
-        # 3. Cargar puntos desde JSON
+        # 3. Load points from JSON
         try:
             with open(self.output_file, "r") as f:
                 data = json.load(f)
                 points = data["points"]
         except Exception:
-            print("No existe calibration.json o está mal formado")
-            print("Crea el archivo manualmente con 4 puntos")
+            print("calibration.json does not exist or is malformed")
+            print("Create the file manually with 4 points")
             return
 
         if len(points) != 4:
-            print("Se necesitan exactamente 4 puntos")
+            print("Exactly 4 points are required")
             return
 
         src_pts = [Point2D(x, y) for x, y in points]
@@ -53,16 +53,16 @@ class CalibrationTool:
             Point2D(0, 500),
         ]
 
-        # 4. Calibrar homografía
+        # 4. Calibrate homography
         success = self.mapper.calibrate(src_pts, dst_pts)
 
         if not success:
-            print("Error al calcular homografía")
+            print("Error calculating homography")
             return
 
-        # 5. Validación: generar BEV y guardarlo
+        # 5. Validation: generate BEV and save it
         bev = self.mapper.transform_frame(frame, (500, 500))
         cv2.imwrite("bev_debug.jpg", bev)
 
-        print("Calibración OK")
-        print("Se generó bev_debug.jpg para validación")
+        print("Calibration OK")
+        print("bev_debug.jpg generated for validation")

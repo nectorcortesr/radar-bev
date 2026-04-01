@@ -4,13 +4,13 @@ import cv2
 
 def compute_homography_dlt(pts_src, pts_dst):
     """
-    Calcula la homografía H usando Direct Linear Transform (DLT).
-    pts_src: array Nx2 de puntos origen
-    pts_dst: array Nx2 de puntos destino
+    Calculate the homography H using Direct Linear Transform (DLT).
+    pts_src: array Nx2 of source points
+    pts_dst: array Nx2 of destination points
     """
     assert (
         len(pts_src) >= 4 and len(pts_dst) >= 4
-    ), "Se necesitan al menos 4 correspondencias"
+    ), "At least 4 correspondences are required"
 
     A = []
     for i in range(len(pts_src)):
@@ -39,9 +39,9 @@ if __name__ == "__main__":
     H_cv2, _ = cv2.findHomography(src, dst)
 
     error = np.max(np.abs(H_dlt - (H_cv2 / H_cv2[2, 2])))
-    print(f"Error máximo contra OpenCV: {error}")
+    print(f"Maximum error against OpenCV: {error}")
 
     assert (
         error < 1e-6
-    ), "Bug detectado: tu DLT no coincide con la implementación industrial"
-    print("¡Módulo DLT implementado exitosamente!")
+    ), "Bug detected: your DLT does not match the industrial implementation"
+    print("DLT module successfully implemented!")

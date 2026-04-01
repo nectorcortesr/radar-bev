@@ -102,7 +102,7 @@ class VideoProcessor:
                     alert = 1
                     cv2.putText(
                         bev,
-                        "ALERTA!",
+                        "ALERT!",
                         (50, 50),
                         cv2.FONT_HERSHEY_SIMPLEX,
                         1.2,
@@ -136,6 +136,6 @@ class VideoProcessor:
         out.release()
         csv_file.close()
 
-        print("✅ Video generado: output.mp4")
-        print("✅ Eventos guardados: events.csv")
+        print("✅ Generated video: output.mp4")
+        print("✅ Events saved: events.csv")
         cap.release()

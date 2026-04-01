@@ -7,7 +7,7 @@ from typing import List, Tuple, Optional
 
 @dataclass
 class Point2D:
-    """Representa un punto coordenado en 2D."""
+    """It represents a coordinate point in 2D."""
 
     x: int
     y: int
@@ -15,7 +15,7 @@ class Point2D:
 
 class HomographyMapper:
     """
-    Abstrae la transformación de perspectiva y medición métrica.
+    Abstracts the perspective transformation and metric measurement.
     """
 
     def __init__(self, scale_factor: float = 0.05):
@@ -24,14 +24,13 @@ class HomographyMapper:
 
     def calibrate(self, src_pts: List[Point2D], dst_pts: List[Point2D]) -> bool:
         """
-        Calcula la matriz H a partir de 4 puntos de referencia.
+        Calculates the H matrix from 4 reference points.
 
         Args:
-            src_pts: Lista de 4 puntos origen en la imagen de la cámara.
-            dst_pts: Lista de 4 puntos destino en la vista BEV.
-
+            src_pts: List of 4 source points in the camera image.
+            dst_pts: List of 4 destination points in the BEV view.
         Returns:
-            bool: True si la calibración fue exitosa y la matriz es válida.
+            bool: True if the calibration was successful and the matrix is valid.
         """
         src = np.array([[pt.x, pt.y] for pt in src_pts], dtype=np.float32)
         dst = np.array([[pt.x, pt.y] for pt in dst_pts], dtype=np.float32)
@@ -44,15 +43,15 @@ class HomographyMapper:
         self, frame: np.ndarray, output_size: Tuple[int, int]
     ) -> np.ndarray:
         """
-        Aplica la transformación de perspectiva al frame.
+        Applies the perspective transformation to theframe.
         """
-        assert self.H is not None, "Debes calibrar antes de transformar el frame."
+        assert self.H is not None, "You must calibrate before transforming the frame."
 
         return cv2.warpPerspective(frame, self.H, output_size)
 
     def measure_distance(self, pt1: Point2D, pt2: Point2D) -> float:
         """
-        Calcula la distancia en metros reales entre dos puntos BEV.
+        Calculates the real-world distance in meters between two BEV points.
         """
         px_dist = math.hypot(pt2.x - pt1.x, pt2.y - pt1.y)
 
