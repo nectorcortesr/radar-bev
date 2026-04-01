@@ -10,7 +10,7 @@ ALERT_THRESHOLD_M = 10.0
 
 
 def get_centroids(mask):
-    """Encuentra contornos y calcula sus centroides usando momentos."""
+    """Find contours and calculate their centroids using moments."""
     contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     centroids = []
@@ -28,7 +28,7 @@ def get_centroids(mask):
 
 
 def log_event(filename, dist_m):
-    """Escribe una nueva fila en el CSV con el timestamp y la distancia."""
+    """Writes a new row in the CSV with the timestamp and distance."""
     with open(filename, mode="a", newline="") as file:
         writer = csv.writer(file)
         writer.writerow([datetime.now().isoformat(), round(dist_m, 2)])
@@ -69,7 +69,7 @@ def main():
 
         if m_dist < ALERT_THRESHOLD_M:
             log_event("events.csv", m_dist)
-            print(f"¡ALERTA! Vehículos demasiado cerca: {m_dist:.2f}m.")
+            print(f"¡ALERT! Vehicles too close: {m_dist:.2f}m.")
 
     cv2.imwrite("hsv_tracker.jpg", frame)
     cv2.imwrite("hsv_mask.jpg", mask)
@@ -77,8 +77,8 @@ def main():
 
     assert os.path.exists(
         "events.csv"
-    ), "Error: El archivo events.csv no se creó en el sistema."
-    print("Test de segmentación y logging: VERDE")
+    ), "Error: The file events.csv was not created in the system."
+    print("Segmentation and logging test: GREEN")
 
 
 if __name__ == "__main__":

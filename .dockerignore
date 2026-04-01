@@ -1,13 +1,63 @@
+# Git
 .git
 .gitignore
+
+# Virtual Environment
 .venv
+venv/
+.env
+.env.*
+
+# Python cache
 __pycache__
 *.pyc
 *.pyo
 *.pyd
+
+# Logs
 *.log
-data
-datasets
-models
-weights
-outputs
+logs/
+
+# Data / ML artifacts
+data/
+datasets/
+models/
+weights/
+outputs/
+
+# large files
+*.mp4
+*.avi
+*.mov
+*.npy
+*.npz
+*.pt
+*.pth
+*.onnx
+*.h5
+
+# Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build
+build/
+dist/
+*.egg-info/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS garbage
+.DS_Store
+Thumbs.db
+
+# Tempory
+*.tmp
+*.swp

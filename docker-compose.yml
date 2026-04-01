@@ -16,4 +16,4 @@ services:
       - ./calibration.json:/app/calibration.json:rw
     network_mode: host
 
-    command: ["--mode", "video", "--video", "data/camiones.mp4"]
+    command: ["--mode", "video", "--video", "data/trucks.mp4"]

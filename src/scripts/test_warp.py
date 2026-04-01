@@ -3,7 +3,7 @@ from src.geometry.transforms2d import rotation_2d, scale_2d, compose
 
 
 def test_warp_image():
-    img = cv2.imread("data/yard.png")  # pon aquí tu imagen
+    img = cv2.imread("data/yard.png")
     assert img is not None, "Imagen no encontrada"
 
     h, w = img.shape[:2]
@@ -15,8 +15,6 @@ def test_warp_image():
     M_cv = M[:2, :]
     warped = cv2.warpAffine(img, M_cv, (w, h))
 
-    # Guardamos la imagen para verificación manual
     cv2.imwrite("data/yard_warped.jpg", warped)
 
-    # Para pytest, podemos chequear tamaño de salida
     assert warped.shape[0] == h and warped.shape[1] == w
